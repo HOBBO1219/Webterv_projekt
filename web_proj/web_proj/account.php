@@ -21,24 +21,20 @@
         <tr>
             <th>Felhasználónev:</th>
             <td>Asdef</td>
-            <td class="mod_td"><button class="mod_gomb">Módosít</button></td>
+            <td><button class="mod_gomb">Módosít</button></td>
         </tr>
         <tr>
             <th>E-mail:</th>
             <td>asdefg@gmail.com</td>
-            <td class="mod_td"><button class="mod_gomb">Módosít</button></td>
+            <td><button class="mod_gomb">Módosít</button></td>
         </tr>
     </table>
 
     <br><br><br>
 
-    <table id="acc_del">
-        <tr>
-            <th>Fiók törlése</th>
-            <td><button class="del_gomb">Töröl</button></td>
-        </tr>
-    </table>
-
+    <div class="del_gomb_container">
+        <button class="del_gomb">Fiók törlése</button>
+    </div>
 
 </body>
 </html>
