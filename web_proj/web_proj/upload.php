@@ -16,7 +16,9 @@
     <h1>Upload Image</h1>
     <form action="upload.php" method="post" enctype="multipart/form-data">
         <input type="file" name="image" accept="image/*" required>
-        <textarea name="description" placeholder="Enter description..." required></textarea>
+        <label>
+            <textarea name="description" placeholder="Enter description..." required></textarea>
+        </label>
         <button class="submit_button" type="submit">Upload</button>
     </form>
 </div>
