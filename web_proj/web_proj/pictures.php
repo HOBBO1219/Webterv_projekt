@@ -16,19 +16,19 @@
 
 <div class="gallery-container">
     <div class="gallery-row">
-        <img src="image1.jpg" alt="Image 1" onclick="openModal('image1.jpg')">
-        <img src="image2.jpg" alt="Image 2" onclick="openModal('image2.jpg')">
-        <img src="image3.jpg" alt="Image 3" onclick="openModal('image3.jpg')">
+        <img src="pictures/image1.jpg" alt="Image 1" onclick="openModal('image1.jpg')">
+        <img src="pictures/image2.jpg" alt="Image 2" onclick="openModal('image2.jpg')">
+        <img src="pictures/image3.jpg" alt="Image 3" onclick="openModal('image3.jpg')">
     </div>
     <div class="gallery-row">
-        <img src="image4.jpg" alt="Image 4" onclick="openModal('image4.jpg')">
-        <img src="image5.jpg" alt="Image 5" onclick="openModal('image5.jpg')">
-        <img src="image6.jpg" alt="Image 6" onclick="openModal('image6.jpg')">
+        <img src="pictures/image4.jpg" alt="Image 4" onclick="openModal('image4.jpg')">
+        <img src="pictures/image5.jpg" alt="Image 5" onclick="openModal('image5.jpg')">
+        <img src="pictures/image6.jpg" alt="Image 6" onclick="openModal('image6.jpg')">
     </div>
     <div class="gallery-row">
-        <img src="image1.jpg" alt="Image 7" onclick="openModal('image1.jpg')">
-        <img src="image3.jpg" alt="Image 8" onclick="openModal('image3.jpg')">
-        <img src="image5.jpg" alt="Image 9" onclick="openModal('image5.jpg')">
+        <img src="pictures/image1.jpg" alt="Image 1" onclick="openModal('image1.jpg')">
+        <img src="pictures/image3.jpg" alt="Image 2" onclick="openModal('image3.jpg')">
+        <img src="pictures/image5.jpg" alt="Image 3" onclick="openModal('image5.jpg')">
     </div>
 </div>
 
@@ -36,7 +36,7 @@
 <div id="myModal" class="modal">
     <span class="close" onclick="closeModal()">&times;</span>
     <div class="modal-content">
-        <img id="modalImage" src="image1.jpg" alt="Selected Image">
+        <img id="modalImage" src="pictures/image1.jpg" alt="Selected Image">
         <table id="commentsTable" class="commentsTable">
             <!-- Commentek dinamikusan ide lesznek rakva a js-bol. -->
         </table>
@@ -47,7 +47,7 @@
     </div>
 </div>
 
-<script src="Comments.js"></script>
+<script src="scripts/Comments.js"></script>
 
 </body>
 </html>

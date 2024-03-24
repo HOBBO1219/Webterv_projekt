@@ -13,7 +13,7 @@
         }
 
         .background_image {
-            background-image: url('background_picture.jpg');
+            background-image: url('../pictures/background_picture.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -67,7 +67,16 @@
         }
 
         .mod_gomb {
-            background-color: #e4d5b7;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .mod_gomb:hover {
+            background-color: #0056b3;
         }
 
         .del_gomb {
@@ -89,18 +98,18 @@
             display: flex;
             justify-content: center;
             align-items: center;
-
+            padding-bottom: 40px;
         }
 
         table {
             border-collapse: collapse;
-            width: 50%;
-            margin: 20px auto;
+            width: 40%;
+            margin: 0 auto;
         }
 
         th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
+            border: 1px solid #ddd;
+            text-align: center;
             padding: 8px;
             background-color: #f2f2f2;
         }
@@ -210,7 +219,7 @@
         }
 
         .gallery-container {
-            background-image: url('background_pictures.jpeg');
+            background-image: url('../pictures/background_pictures.jpeg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -309,4 +318,27 @@
             max-height: 70vh;
             object-fit: contain;
             pointer-events: none;
+        }
+
+        .image-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
+            max-width: 100%;
+            overflow-y: auto;
+            max-height: 60vh; /* Adjust as needed */
+        }
+
+        .image-container img {
+            width: 150px; /* Adjust the width as needed */
+            height: auto;
+            margin: 5px; /* Adjust the spacing between images */
+            transition: transform 0.3s;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.2); /* Increase the scale on hover */
+            z-index: 1;
+            cursor: pointer;
         }

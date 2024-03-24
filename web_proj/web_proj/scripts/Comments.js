@@ -3,8 +3,8 @@ function openModal(imageSrc) {
     var modalImg = document.getElementById("modalImage");
     var commentsTable = document.getElementById("commentsTable");
 
-
-    modalImg.src = imageSrc;
+    // Concatenate "pictures/" with the image source
+    modalImg.src = "pictures/" + imageSrc;
 
     commentsTable.innerHTML = `
             <tr>
