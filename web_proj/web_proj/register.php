@@ -11,17 +11,17 @@
     <h2>Regisztráció</h2>
     <form action="index.php" method="post">
         
-        <label for="email">E-mail cím:</label>
-        <input type="text" name="email" required>
+        <label for="email" >E-mail cím:</label>
+        <input type="text" name="email" id="email" required>
 
-        <label for="felnev">Felhasználónév:</label>
-        <input type="text" name="felnev" required>
+        <label for="felnev" >Felhasználónév:</label>
+        <input type="text" name="felnev" id="felnev" required>
         
-        <label for="jelszo">Jelszó:</label>
-        <input type="password" name="jelszo" required>
+        <label for="jelszo" >Jelszó:</label>
+        <input type="password" name="jelszo" id="jelszo" required>
 
-        <label for="jelszo_ismet">Jelszó megerősítése:</label>
-        <input type="password" name="jelszo_ismet" required>
+        <label for="jelszo_ismet" >Jelszó megerősítése:</label>
+        <input type="password" name="jelszo_ismet" id="jelszo_ismet" required>
 
         <input type="submit" value="Regisztrál">
     </form>
