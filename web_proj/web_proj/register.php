@@ -1,3 +1,41 @@
+<?php
+global $conn;
+include 'db.php';
+
+
+$registrationMessage = "";
+// Process registration form
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+    $username = $_POST['username'];
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password
+
+
+    // Check if passwords match
+    $password_confirm = $_POST['password_confirm'];
+    if ($_POST['password'] !== $password_confirm) {
+        $registrationMessage = "Error: Passwords do not match.";
+    } else {
+        $sql = "INSERT INTO users (Email, Username, Password)
+                VALUES ('$email', '$username', '$password')";
+
+        if ($conn->query($sql) === TRUE) {
+            $registrationMessage = "Registration successful!";
+        } else {
+            $registrationMessage = "Error: " . $sql . "<br>" . $conn->error;
+        }
+    }
+}
+
+$conn->close();
+
+session_start();
+
+$_SESSION['registrationMessage'] = $registrationMessage;
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -9,7 +47,7 @@
 </head>
 <body>
     <h2>Regisztráció</h2>
-    <form action="index.php" method="post">
+    <form action="login.php" method="post">
         
         <label for="email" >E-mail cím:</label>
         <input type="text" name="email" id="email" required>

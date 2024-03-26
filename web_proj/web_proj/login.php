@@ -1,3 +1,34 @@
+<?php
+global $conn;
+include 'db.php';
+
+// Process login form
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = $_POST['Username'];
+    $password = $_POST['Password'];
+
+    $sql = "SELECT * FROM users WHERE username='$username'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows == 1) {
+        $row = $result->fetch_assoc();
+
+        if (password_verify($password, $row['Password'])) {
+            echo "Login successful!";
+            // Update last login time
+            $conn->query("UPDATE users SET last_login=NOW() WHERE id=" . $row['id']);
+        } else {
+            echo "Invalid password!";
+        }
+    } else {
+        echo "User not found!";
+    }
+}
+
+$conn->close();
+?>
+
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
