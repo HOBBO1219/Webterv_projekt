@@ -7,20 +7,20 @@ $registrationMessage = "";
 // Process registration form
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
-    $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password
+    $username = $_POST['felnev'];
+    $password = password_hash($_POST['jelszo'], PASSWORD_DEFAULT); // Hash the password
 
 
     // Check if passwords match
-    $password_confirm = $_POST['password_confirm'];
-    if ($_POST['password'] !== $password_confirm) {
-        $registrationMessage = "Error: Passwords do not match.";
+    $password_confirm = $_POST['jelszo_ismet'];
+    if ($_POST['jelszo'] !== $password_confirm) {
+        $registrationMessage = "HIBA: Helytelen jelszó.";
     } else {
         $sql = "INSERT INTO users (Email, Username, Password)
                 VALUES ('$email', '$username', '$password')";
 
         if ($conn->query($sql) === TRUE) {
-            $registrationMessage = "Registration successful!";
+            $registrationMessage = "Regisztráció sikeres!";
         } else {
             $registrationMessage = "Error: " . $sql . "<br>" . $conn->error;
         }
@@ -43,11 +43,24 @@ $_SESSION['registrationMessage'] = $registrationMessage;
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Regisztráció</title>
     <link rel="stylesheet" href="styles/form_style.css">
+
+    <script>
+        // Function to display registration message in a popup
+        function displayRegistrationMessage() {
+            var registrationMessage = "<?php echo $registrationMessage; ?>";
+            if (registrationMessage !== "") {
+                alert(registrationMessage);
+            }
+        }
+
+        // Call the function onload
+        window.onload = displayRegistrationMessage;
+    </script>
     
 </head>
 <body>
     <h2>Regisztráció</h2>
-    <form action="login.php" method="post">
+    <form action="register.php" method="post">
         
         <label for="email" >E-mail cím:</label>
         <input type="text" name="email" id="email" required>

@@ -1,3 +1,25 @@
+<?php
+global $conn;
+session_start();
+include 'db.php';
+
+// Retrieve user ID from session
+$userID = $_SESSION['felh_id'];
+
+// Retrieve images associated with the logged-in user
+$sql = "SELECT * FROM pictures WHERE UserId = '$userID'";
+$result = $conn->query($sql);
+
+// Check if images are available
+if ($result->num_rows > 0) {
+    $images = $result->fetch_all(MYSQLI_ASSOC);
+} else {
+    $images = []; // If no images found, initialize empty array
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,40 +30,57 @@
 </head>
 <body>
 <nav>
-    <a href="index.php">Főoldal</a>
+    <a href="fo_oldal.php">Főoldal</a>
     <a href="login.php">Kijelentkezés</a>
 </nav>
 
 <h2 class="centered_header">Képgaléria</h2>
 
 <div class="gallery-container">
-    <div class="gallery-row">
-        <img src="pictures/image1.jpg" alt="Image 1" onclick="openModal('image1.jpg')">
-        <img src="pictures/image2.jpg" alt="Image 2" onclick="openModal('image2.jpg')">
-        <img src="pictures/image3.jpg" alt="Image 3" onclick="openModal('image3.jpg')">
-    </div>
-    <div class="gallery-row">
-        <img src="pictures/image4.jpg" alt="Image 4" onclick="openModal('image4.jpg')">
-        <img src="pictures/image5.jpg" alt="Image 5" onclick="openModal('image5.jpg')">
-        <img src="pictures/image6.jpg" alt="Image 6" onclick="openModal('image6.jpg')">
-    </div>
-    <div class="gallery-row">
-        <img src="pictures/image1.jpg" alt="Image 1" onclick="openModal('image1.jpg')">
-        <img src="pictures/image3.jpg" alt="Image 2" onclick="openModal('image3.jpg')">
-        <img src="pictures/image5.jpg" alt="Image 3" onclick="openModal('image5.jpg')">
-    </div>
+    <?php
+    $counter = 0;
+    foreach ($images as $image):
+        if ($counter % 3 === 0) {
+            // Start a new row
+            echo '<div class="gallery-row">';
+        }
+        ?>
+        <img src="pictures/<?php echo htmlspecialchars($image['ImagePath']); ?>" alt="<?php echo htmlspecialchars($image['Description']); ?>" onclick="openModal('<?php echo htmlspecialchars($image['ImagePath']); ?>')">
+        <?php
+        $counter++;
+        if ($counter % 3 === 0) {
+            // Close the row
+            echo '</div>';
+        }
+    endforeach;
+
+    // Close the last row if the number of images is not divisible by 3
+    if ($counter % 3 !== 0) {
+        echo '</div>';
+    }
+    ?>
 </div>
 
 <!-- Modal -->
 <div id="myModal" class="modal">
     <span class="close" onclick="closeModal()">&times;</span>
     <div class="modal-content">
-        <img id="modalImage" src="pictures/image1.jpg" alt="Selected Image">
+        <img id="modalImage" src="" alt="Selected Image">
         <table id="commentsTable" class="commentsTable">
-            <!-- Commentek dinamikusan ide lesznek rakva a js-bol. -->
+            <thead>
+            <tr>
+                <th>Username</th>
+                <th>Comment</th>
+                <th>Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Comments will be dynamically added here -->
+            </tbody>
         </table>
-        <form id="commentForm" onsubmit="addComment(); return false;">
-            <label for="commentText"></label><textarea id="commentText" placeholder="Enter your comment..." required></textarea>
+        <form id="commentForm" onsubmit="addComment('<?php echo $image['ImagePath']; ?>'); return false;">
+            <label for="commentText">Comment:</label>
+            <textarea id="commentText" placeholder="Enter your comment..." required></textarea>
             <button type="submit">Add Comment</button>
         </form>
     </div>

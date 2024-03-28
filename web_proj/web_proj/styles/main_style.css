@@ -225,9 +225,9 @@
             background-repeat: no-repeat;
             max-width: 1300px;
             margin: 20px auto;
-            padding: 20px;
+            padding: 80px;
             overflow-y: auto;
-            max-height: 80vh;
+            max-height: 68vh;
         }
 
         .gallery-row {
@@ -248,7 +248,7 @@
         }
 
         .gallery-row img:hover {
-            transform: scale(1.8);
+            transform: scale(1.4);
         }
 
         .modal {
