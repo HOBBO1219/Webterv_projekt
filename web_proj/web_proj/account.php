@@ -82,7 +82,7 @@ $conn->close();
 <br><br><br>
 
 <div class="del_gomb_container">
-    <button class="del_gomb">Fiók törlése</button>
+    <button class="del_gomb" onclick="deleteAccount()">Fiók törlése</button>
 </div>
 
 <div class="image-container">

@@ -342,3 +342,13 @@
             z-index: 1;
             cursor: pointer;
         }
+
+        #imageDescription {
+            padding: 10px 0;
+            background-color: rgb(217, 217, 217);
+            overflow: hidden;
+        }
+
+        #imageDescription p {
+            margin: 0;
+        }

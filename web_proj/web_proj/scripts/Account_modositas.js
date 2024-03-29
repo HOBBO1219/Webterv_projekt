@@ -92,3 +92,23 @@ function adjustImageContainerHeight() {
     var maxHeight = windowHeight - (navHeight + headerHeight + buttonContainerHeight + 250); // Adjust 100 as needed for additional spacing
     document.querySelector('.image-container').style.maxHeight = maxHeight + 'px';
 }
+
+function deleteAccount() {
+    if (confirm("Biztosan törölni szeretné a fiókját?")) {
+        // Send AJAX request to delete account
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "delete_account.php", true);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    // Account deleted successfully, redirect to login page
+                    window.location.href = "login.php";
+                } else {
+                    // Error occurred while deleting account
+                    alert("Hiba történt a fiók törlése közben.");
+                }
+            }
+        };
+        xhr.send();
+    }
+}

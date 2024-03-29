@@ -7,7 +7,7 @@ include 'db.php';
 $userID = $_SESSION['felh_id'];
 
 // Retrieve images associated with the logged-in user
-$sql = "SELECT * FROM pictures WHERE UserId = '$userID'";
+$sql = "SELECT * FROM pictures";
 $result = $conn->query($sql);
 
 // Check if images are available
@@ -45,7 +45,7 @@ $conn->close();
             echo '<div class="gallery-row">';
         }
         ?>
-        <img src="pictures/<?php echo htmlspecialchars($image['ImagePath']); ?>" alt="<?php echo htmlspecialchars($image['Description']); ?>" onclick="openModal('<?php echo htmlspecialchars($image['ImagePath']); ?>')">
+        <img src="pictures/<?php echo htmlspecialchars($image['ImagePath']); ?>" alt="<?php echo htmlspecialchars($image['Description']); ?>" onclick="openModal('<?php echo htmlspecialchars($image['ImagePath']); ?>', '<?php echo htmlspecialchars($image['Description']); ?>')">
         <?php
         $counter++;
         if ($counter % 3 === 0) {
@@ -66,6 +66,7 @@ $conn->close();
     <span class="close" onclick="closeModal()">&times;</span>
     <div class="modal-content">
         <img id="modalImage" src="" alt="Selected Image">
+        <div id="imageDescription"></div>
         <table id="commentsTable" class="commentsTable">
             <thead>
             <tr>
@@ -78,9 +79,10 @@ $conn->close();
             <!-- Comments will be dynamically added here -->
             </tbody>
         </table>
-        <form id="commentForm" onsubmit="addComment('<?php echo $image['ImagePath']; ?>'); return false;">
+        <form id="commentForm" onsubmit="addComment(); return false;">
             <label for="commentText">Comment:</label>
             <textarea id="commentText" placeholder="Enter your comment..." required></textarea>
+            <input type="hidden" id="imageSrcInput" value="">
             <button type="submit">Add Comment</button>
         </form>
     </div>
