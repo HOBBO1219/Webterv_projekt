@@ -19,47 +19,57 @@ function fetchCommentsFromDatabase(imageSrc) {
     });
 }
 
+function updateCommentsTable(comments) {
+    var commentsTable = document.getElementById("commentsTable");
+    // Clear existing comments
+    var tbody = commentsTable.querySelector('tbody');
+    tbody.innerHTML = '';
+    // Add fetched comments to the table
+    comments.forEach(function(comment) {
+        var newRow = tbody.insertRow();
+        var cell1 = newRow.insertCell(0);
+        var cell2 = newRow.insertCell(1);
+        var cell3 = newRow.insertCell(2);
+        cell1.textContent = comment.Username;
+        cell2.textContent = comment.Comment;
+        cell3.textContent = comment.CommentedAt; // Assuming 'commentedAt' is the field name for the timestamp
+    });
+}
+
+function fetchCommentsAndUpdateModal(imageSrc) {
+    // Fetch comments from the database
+    fetchCommentsFromDatabase(imageSrc)
+        .then(function(comments) {
+            console.log("Comments fetched successfully:", comments);
+            // Update comments table in the modal
+            updateCommentsTable(comments);
+        })
+        .catch(function(error) {
+            console.error('Error fetching comments:', error);
+            // Optionally, handle the error here (e.g., show an error message to the user)
+        });
+}
+
 function openModal(imageSrc, description) {
     var modal = document.getElementById("myModal");
     var modalImg = document.getElementById("modalImage");
-    var commentsTable = document.getElementById("commentsTable");
     var imageDescription = document.getElementById("imageDescription");
+    var imageSrcInput = document.getElementById("imageSrcInput"); // Get the hidden input field
 
-    // Concatenate "pictures/" with the image source
+    // Set the image source and description
     modalImg.src = "pictures/" + imageSrc;
-
-    // Update image description
     imageDescription.textContent = description;
 
-    // Fetch comments from the database
-    fetchCommentsFromDatabase(imageSrc)
-        .then(function (comments) {
-            console.log("Comments fetched successfully:", comments);
+    // Set the image source value in the hidden input field
+    imageSrcInput.value = imageSrc;
 
-            // Clear existing comments
-            var tbody = commentsTable.querySelector('tbody');
-            tbody.innerHTML = '';
+    // Fetch comments and update modal
+    fetchCommentsAndUpdateModal(imageSrc);
 
-            // Add fetched comments to the table
-            comments.forEach(function (comment) {
-                var newRow = tbody.insertRow();
-                var cell1 = newRow.insertCell(0);
-                var cell2 = newRow.insertCell(1);
-                var cell3 = newRow.insertCell(2);
-                cell1.textContent = comment.Username;
-                cell2.textContent = comment.Comment;
-                cell3.textContent = comment.CommentedAt; // Assuming 'commentedAt' is the field name for the timestamp
-            });
-
-            // Show the modal
-            modal.style.display = "block";
-        })
-        .catch(function (error) {
-            console.error('Error fetching comments:', error);
-            // Hide the modal if an error occurs
-            modal.style.display = "none";
-        });
+    // Show the modal
+    modal.style.display = "block";
 }
+
 
 function addComment() {
     var commentText = document.getElementById("commentText").value;
@@ -78,10 +88,10 @@ function addComment() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
                 console.log("Comment added successfully: " + xhr.responseText);
-                // Reload the modal to update comments
-                openModal(imageSrc);
                 // Clear the comment textbox
                 document.getElementById("commentText").value = "";
+                // Fetch and update comments without closing the modal
+                fetchCommentsAndUpdateModal(imageSrc);
             } else {
                 console.error("Error adding comment. Status code: " + xhr.status);
                 // Optionally, handle the error here (e.g., show an error message to the user)

@@ -71,16 +71,24 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
     <a href="login.php">Kijelentkezés</a>
 </nav>
 
-<div class="container">
+<div class="container" id="uploadContainer">
     <h1>Upload Image</h1>
-    <form action="upload.php" method="post" enctype="multipart/form-data">
+    <form action="upload.php" method="post" enctype="multipart/form-data" id="uploadForm">
         <input type="hidden" name="user_id" value="<?php echo $_SESSION['felh_id']; ?>">
-        <input type="file" name="image" accept="image/*" required>
+        <label for="fileInput" id="fileInputLabel">Drag & Drop or Click to Upload</label>
+        <input type="file" name="image" accept="image/*" id="fileInput" style="display: none;">
         <label>
             <textarea name="description" placeholder="Enter description..." required></textarea>
         </label>
         <button class="submit_button" type="submit">Upload</button>
     </form>
+    <div id="imagePreviewContainer" style="display: none;">
+        <img id="imagePreview" src="#" alt="Uploaded Image Preview">
+    </div>
 </div>
+
+
+<script src="scripts/Upload_image.js"></script>
+
 </body>
 </html>

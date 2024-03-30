@@ -45,7 +45,7 @@ $conn->close();
             echo '<div class="gallery-row">';
         }
         ?>
-        <img src="pictures/<?php echo htmlspecialchars($image['ImagePath']); ?>" alt="<?php echo htmlspecialchars($image['Description']); ?>" onclick="openModal('<?php echo htmlspecialchars($image['ImagePath']); ?>', '<?php echo htmlspecialchars($image['Description']); ?>')">
+        <img src="pictures/<?php echo htmlspecialchars($image['ImagePath']); ?>" alt="<?php echo htmlspecialchars($image['Description']); ?>" onclick="openModal('<?php echo htmlspecialchars($image['ImagePath']); ?>', '<?php echo preg_replace('/\s+/', ' ', htmlspecialchars($image['Description'])); ?>')">
         <?php
         $counter++;
         if ($counter % 3 === 0) {
