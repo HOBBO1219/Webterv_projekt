@@ -14,6 +14,7 @@ session_start(); // Start the session
 <body class="background_image">
 <nav>
     <a href="account.php" >Fiók</a>
+    <a href="chat.php">Üzenetek</a>
     <a href="login.php">Kijelentkezés</a>
 </nav>
 
