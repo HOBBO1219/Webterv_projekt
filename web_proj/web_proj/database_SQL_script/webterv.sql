@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Mar 29, 2024 at 10:23 PM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Gép: 127.0.0.1
+-- Létrehozás ideje: 2024. Ápr 20. 17:19
+-- Kiszolgáló verziója: 10.4.28-MariaDB
+-- PHP verzió: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,27 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `webterv`
+-- Adatbázis: `webterv`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `comments`
+-- Tábla szerkezet ehhez a táblához `chat`
+--
+
+CREATE TABLE `chat` (
+  `MessageID` int(10) NOT NULL,
+  `SenderID` int(11) NOT NULL,
+  `ReceiverID` int(11) NOT NULL,
+  `MessageContent` text NOT NULL,
+  `MessageDate` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `comments`
 --
 
 CREATE TABLE `comments` (
@@ -38,7 +52,7 @@ CREATE TABLE `comments` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `pictures`
+-- Tábla szerkezet ehhez a táblához `pictures`
 --
 
 CREATE TABLE `pictures` (
@@ -52,7 +66,7 @@ CREATE TABLE `pictures` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Tábla szerkezet ehhez a táblához `users`
 --
 
 CREATE TABLE `users` (
@@ -65,11 +79,19 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
--- Indexes for dumped tables
+-- Indexek a kiírt táblákhoz
 --
 
 --
--- Indexes for table `comments`
+-- A tábla indexei `chat`
+--
+ALTER TABLE `chat`
+  ADD PRIMARY KEY (`MessageID`),
+  ADD KEY `SenderID` (`SenderID`),
+  ADD KEY `ReceiverID` (`ReceiverID`);
+
+--
+-- A tábla indexei `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`CommentID`),
@@ -77,14 +99,14 @@ ALTER TABLE `comments`
   ADD KEY `PictureID` (`PictureID`);
 
 --
--- Indexes for table `pictures`
+-- A tábla indexei `pictures`
 --
 ALTER TABLE `pictures`
   ADD PRIMARY KEY (`PictureID`),
   ADD KEY `UserID` (`UserID`);
 
 --
--- Indexes for table `users`
+-- A tábla indexei `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`UserID`),
@@ -92,40 +114,53 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `Username` (`Username`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- A kiírt táblák AUTO_INCREMENT értéke
 --
 
 --
--- AUTO_INCREMENT for table `comments`
+-- AUTO_INCREMENT a táblához `chat`
+--
+ALTER TABLE `chat`
+  MODIFY `MessageID` int(10) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `comments`
 --
 ALTER TABLE `comments`
   MODIFY `CommentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
--- AUTO_INCREMENT for table `pictures`
+-- AUTO_INCREMENT a táblához `pictures`
 --
 ALTER TABLE `pictures`
   MODIFY `PictureID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
   MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- Constraints for dumped tables
+-- Megkötések a kiírt táblákhoz
 --
 
 --
--- Constraints for table `comments`
+-- Megkötések a táblához `chat`
+--
+ALTER TABLE `chat`
+  ADD CONSTRAINT `chat_ibfk_1` FOREIGN KEY (`SenderID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chat_ibfk_2` FOREIGN KEY (`ReceiverID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `comments`
 --
 ALTER TABLE `comments`
   ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE,
   ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`PictureID`) REFERENCES `pictures` (`PictureID`) ON DELETE CASCADE;
 
 --
--- Constraints for table `pictures`
+-- Megkötések a táblához `pictures`
 --
 ALTER TABLE `pictures`
   ADD CONSTRAINT `pictures_ibfk_1` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE;
