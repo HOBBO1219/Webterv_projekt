@@ -46,12 +46,10 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
     // Insert data into database
     $sql = "INSERT INTO pictures (UserId, ImagePath, Description) VALUES ('$user_id', '$new_filename', '$description')";
     if ($conn->query($sql) === TRUE) {
-        echo "Image uploaded successfully.";
+
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
-} else {
-    echo "Error uploading image.";
 }
 ?>
 
