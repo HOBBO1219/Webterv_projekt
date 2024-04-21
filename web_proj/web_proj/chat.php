@@ -56,7 +56,6 @@ include 'db.php';
         <form id="messageForm" onsubmit="addMessage('<?php echo $session_username ?>'); return false;">
             <label for="messageText">Message:</label>
             <textarea id="messageText" placeholder="Enter your message..." required></textarea>
-            <input type="hidden" id="imageSrcInput" value="">
             <button type="submit">Send</button>
         </form>-->
     </div>
