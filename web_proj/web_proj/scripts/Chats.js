@@ -31,8 +31,8 @@ function updateMessagesTable(chats) {
         var cell2 = newRow.insertCell(1);
         var cell3 = newRow.insertCell(2);
         cell1.textContent = chat.Sender;
-        cell2.textContent = chat.Message_content;
-        cell3.textContent = chat.Message_date;
+        cell2.textContent = chat.MessageContent;
+        cell3.textContent = chat.MessageDate;
     });
 }
 
