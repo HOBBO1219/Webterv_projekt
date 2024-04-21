@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2024. Ápr 20. 17:19
+-- Létrehozás ideje: 2024. Ápr 21. 14:40
 -- Kiszolgáló verziója: 10.4.28-MariaDB
 -- PHP verzió: 8.2.4
 
@@ -29,8 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `chat` (
   `MessageID` int(10) NOT NULL,
-  `SenderID` int(11) NOT NULL,
-  `ReceiverID` int(11) NOT NULL,
+  `Sender` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci NOT NULL,
+  `Receiver` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci NOT NULL,
   `MessageContent` text NOT NULL,
   `MessageDate` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -49,6 +49,14 @@ CREATE TABLE `comments` (
   `CommentedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
+--
+-- A tábla adatainak kiíratása `comments`
+--
+
+INSERT INTO `comments` (`CommentID`, `UserID`, `PictureID`, `Comment`, `CommentedAt`) VALUES
+(27, 4, 29, 'asdasd', '2024-04-21 10:11:31'),
+(28, 4, 29, 'asdasd', '2024-04-21 10:11:33');
+
 -- --------------------------------------------------------
 
 --
@@ -62,6 +70,13 @@ CREATE TABLE `pictures` (
   `ImagePath` varchar(255) NOT NULL,
   `UploadedAt` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `pictures`
+--
+
+INSERT INTO `pictures` (`PictureID`, `UserID`, `Description`, `ImagePath`, `UploadedAt`) VALUES
+(29, 4, 'asd', '6624e642f174e.PNG', '2024-04-21 10:11:14');
 
 -- --------------------------------------------------------
 
@@ -79,6 +94,14 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_hungarian_ci;
 
 --
+-- A tábla adatainak kiíratása `users`
+--
+
+INSERT INTO `users` (`UserID`, `Email`, `Username`, `Password`, `CreatedAt`, `UpdatedAt`) VALUES
+(4, 'asd@gmail.com', 'asd', '$2y$10$CHVFXMyRFoMVc5/c9LxNZOW/jwXgzvWdzZAyXciCbkY5Blcf2L5oa', '2024-04-20 19:21:40', '2024-04-20 19:21:40'),
+(5, 'asd1@gmail.com', 'asd1', '$2y$10$Wb3PW2ApsOlsWkclpBKxJ.MlfzLIPwl7LXK6ERlVd42L2DUUiJNpW', '2024-04-21 09:33:21', '2024-04-21 09:33:21');
+
+--
 -- Indexek a kiírt táblákhoz
 --
 
@@ -87,8 +110,8 @@ CREATE TABLE `users` (
 --
 ALTER TABLE `chat`
   ADD PRIMARY KEY (`MessageID`),
-  ADD KEY `SenderID` (`SenderID`),
-  ADD KEY `ReceiverID` (`ReceiverID`);
+  ADD KEY `Sender` (`Sender`),
+  ADD KEY `Receiver` (`Receiver`);
 
 --
 -- A tábla indexei `comments`
@@ -127,19 +150,19 @@ ALTER TABLE `chat`
 -- AUTO_INCREMENT a táblához `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `CommentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `CommentID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT a táblához `pictures`
 --
 ALTER TABLE `pictures`
-  MODIFY `PictureID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `PictureID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT a táblához `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Megkötések a kiírt táblákhoz
@@ -149,8 +172,8 @@ ALTER TABLE `users`
 -- Megkötések a táblához `chat`
 --
 ALTER TABLE `chat`
-  ADD CONSTRAINT `chat_ibfk_1` FOREIGN KEY (`SenderID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `chat_ibfk_2` FOREIGN KEY (`ReceiverID`) REFERENCES `users` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `chat_ibfk_1` FOREIGN KEY (`Sender`) REFERENCES `users` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `chat_ibfk_2` FOREIGN KEY (`Receiver`) REFERENCES `users` (`Username`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `comments`
