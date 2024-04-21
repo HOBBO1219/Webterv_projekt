@@ -60,7 +60,7 @@ function openModal(username, sessionuser) {
     modal.style.display = "block";
 }
 
-function addMessage(sender, receiver, messageContent) {
+function addMessage(sender, receiver, message_content) {
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "save_message.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -74,7 +74,7 @@ function addMessage(sender, receiver, messageContent) {
             }
         }
     };
-    var params = "sender=" + encodeURIComponent(sender) + "&receiver=" + encodeURIComponent(receiver) + "&messageContent=" + encodeURIComponent(messageContent);
+    var params = "sender=" + encodeURIComponent(sender) + "&receiver=" + encodeURIComponent(receiver) + "&message_content=" + encodeURIComponent(message_content);
     xhr.send(params);
 }
 
