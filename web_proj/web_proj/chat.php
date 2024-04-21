@@ -53,10 +53,11 @@ include 'db.php';
 
             </tbody>
         </table>
-        <form id="messageForm" onsubmit="addMessage('<?php echo $session_username ?>'); return false;">
+        <form id="messageForm" onsubmit="addMessage(); return false;">
             <label for="messageText">Message:</label>
             <textarea id="messageText" placeholder="Enter your message..." required></textarea>
             <input type="hidden" id="username" value="">
+            <input type="hidden" id="sessionuser" value="<?php echo $session_username ?>">
             <button type="submit">Send</button>
         </form>
     </div>

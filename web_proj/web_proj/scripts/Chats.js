@@ -60,24 +60,33 @@ function openModal(username, sessionuser) {
     modal.style.display = "block";
 }
 
-function addMessage(sender, receiver, message_content) {
+function addMessage() {
+    var messageText = document.getElementById("messageText").value;
+    if (messageText.trim() === "") {
+        alert("Please enter a message.");
+        return;
+    }
+
+    var username = document.getElementById("username").value;
+    var sessionuser = document.getElementById("sessionuser").value;
+
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "save_message.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                console.log("Message sent successfully.");
-                fetchMessagesAndUpdateModal(receiver, sender);
+                console.log("Message sent successfully." + xhr.responseText);
+                document.getElementById("messageText").value = "";
+                fetchMessagesAndUpdateModal(username, sessionuser);
             } else {
                 console.error("Error sending message. Status code: " + xhr.status);
             }
         }
     };
-    var params = "sender=" + encodeURIComponent(sender) + "&receiver=" + encodeURIComponent(receiver) + "&message_content=" + encodeURIComponent(message_content);
+    var params = "username=" + encodeURIComponent(username) + "&sessionuser=" + encodeURIComponent(sessionuser) + "&message_content=" + encodeURIComponent(messageText);
     xhr.send(params);
 }
-
 
 function closeModal() {
     var modal = document.getElementById("myModal");
