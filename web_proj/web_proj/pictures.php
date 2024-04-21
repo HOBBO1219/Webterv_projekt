@@ -18,15 +18,34 @@ function fetchImages() {
     }
 }
 
+function calculateAverageRating($imageSrc) {
+    global $conn;
+
+    $sql = "SELECT AVG(Rating) AS AvgRating FROM ratings WHERE ImageSrc = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $imageSrc);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        return $row['AvgRating'];
+    } else {
+        return 0; // Return 0 if no ratings found for the image
+    }
+}
+
 // Retrieve user ID from session
 $userID = $_SESSION['felh_id'];
 
 // Retrieve images associated with the logged-in user
 $images = fetchImages();
 
-// Calculate average rating for each image
+// Calculate average rating for each image and update pictures table
 foreach ($images as &$image) {
-    $image['averageRating'] = calculateAverageRating($image['PictureID']); // Assuming 'PictureID' is the correct column name
+    $imageSrc = $image['ImagePath']; // Assuming 'PictureID' is the correct column name
+    $avgRating = calculateAverageRating($imageSrc);
+    $image['averageRating'] = $avgRating; // Set the 'averageRating' key for each image
 }
 
 $conn->close();
@@ -126,24 +145,3 @@ $conn->close();
 
 </body>
 </html>
-
-<?php
-// Define a function to calculate the average rating for a given image ID
-function calculateAverageRating($imageID) {
-    global $conn; // Assuming $conn is your database connection
-
-    // Prepare and execute SQL query to calculate average rating
-    $sql = "SELECT AVG(Rating) AS AverageRating FROM pictures WHERE PictureID = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $imageID);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    // Fetch the average rating
-    $row = $result->fetch_assoc();
-    $averageRating = $row['AverageRating'];
-
-    // Return the average rating (round to 1 decimal place)
-    return round($averageRating, 1);
-}
-?>
