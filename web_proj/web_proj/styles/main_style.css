@@ -293,6 +293,19 @@
             word-wrap: break-word;
         }
 
+        .messageTable {
+            width: 100%;
+            max-width: 600px;
+            overflow-y: auto;
+            max-height: 60vh;
+        }
+
+        .messageTable td {
+            max-width: 300px;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+
         .selected-image {
             display: block;
             margin: 0 auto;

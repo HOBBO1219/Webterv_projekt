@@ -22,11 +22,12 @@ include 'db.php';
 
 <table>
     <?php
+        $session_username = $_SESSION['username'];
         $user_list = "SELECT username FROM users";
         $result = $conn->query($user_list);
         while($row = $result->fetch_assoc()){
             echo "<tr><td>" . $row['username'] . "</td><td>";
-            echo "<input type='submit' onclick='openModal(\"" . htmlspecialchars($row['username']) . "\")'>";
+            echo "<input type='submit' value='Chat' onclick='openModal(\"" . htmlspecialchars($row['username']) . "\", \"" . htmlspecialchars($session_username) . "\")'>";
             echo "</td></tr>";
 
 
@@ -43,7 +44,7 @@ include 'db.php';
             <thead>
             <tr>
                 <th>Username</th>
-                <th>Comment</th>
+                <th>Message</th>
                 <th>Time</th>
             </tr>
             </thead>
@@ -51,13 +52,13 @@ include 'db.php';
             <!-- Messages will be dynamically added here -->
 
             </tbody>
-        </table>
-        <form id="messageForm" onsubmit="addMessage(); return false;">
+        </table><!--
+        <form id="messageForm" onsubmit="addMessage('<?php echo $session_username ?>'); return false;">
             <label for="messageText">Message:</label>
             <textarea id="messageText" placeholder="Enter your message..." required></textarea>
             <input type="hidden" id="imageSrcInput" value="">
             <button type="submit">Send</button>
-        </form>
+        </form>-->
     </div>
 </div>
 

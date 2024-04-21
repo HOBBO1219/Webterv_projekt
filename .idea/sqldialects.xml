@@ -5,6 +5,7 @@
     <file url="file://$PROJECT_DIR$/web_proj/web_proj/chat.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/web_proj/web_proj/delete_account.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/web_proj/web_proj/delete_picture.php" dialect="GenericSQL" />
+    <file url="file://$PROJECT_DIR$/web_proj/web_proj/fetch_chat.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/web_proj/web_proj/fetch_comments.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/web_proj/web_proj/login.php" dialect="GenericSQL" />
     <file url="file://$PROJECT_DIR$/web_proj/web_proj/pictures.php" dialect="GenericSQL" />
