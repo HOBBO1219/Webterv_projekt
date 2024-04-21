@@ -142,14 +142,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     function highlightStars(rating) {
-        stars.forEach(function (star) {
-            var starRating = parseFloat(star.getAttribute('data-rating'));
-            if (starRating <= rating) {
-                if (rating - starRating >= 0.5) {
-                    star.innerHTML = '&#9733;'; // Filled star
-                } else {
-                    star.innerHTML = '&#9734;&#9733;'; // Half-filled star
-                }
+        stars.forEach(function (star, index) {
+            if (index < Math.floor(rating)) {
+                star.innerHTML = '&#9733;'; // Filled star
+            } else if (index === Math.floor(rating) && rating % 1 !== 0) {
+                // Display half-filled star
+                star.innerHTML = '&#9733;&#189;'; // Half-filled star
             } else {
                 star.innerHTML = '&#9734;'; // Empty star
             }
