@@ -2,7 +2,7 @@ function fetchMessagesFromDatabase(username, sessionuser) {
     return new Promise(function (resolve, reject) {
         // Make an AJAX request to fetch comments from the database
         var xhr = new XMLHttpRequest();
-        xhr.open("GET", "fetch_chat.php?=" + encodeURIComponent(username) + encodeURIComponent(sessionuser), true);
+        xhr.open("GET", "fetch_chat.php?username=" + encodeURIComponent(username) + "&sessionuser=" + encodeURIComponent(sessionuser), true);
         xhr.onload = function () {
             if (xhr.status === 200) {
                 // Parse the response JSON
@@ -32,7 +32,7 @@ function updateMessagesTable(chats) {
         var cell3 = newRow.insertCell(2);
         cell1.textContent = chat.Sender;
         cell2.textContent = chat.MessageContent;
-        cell3.textContent = chat.MessageDate; // Assuming 'commentedAt' is the field name for the timestamp
+        cell3.textContent = chat.MessageDate;
     });
 }
 
@@ -60,34 +60,22 @@ function openModal(username, sessionuser) {
     modal.style.display = "block";
 }
 
-function addMessage($session_username) {
-    var messageText = document.getElementById("messageText").value;
-    if (messageText.trim() === "") {
-        alert("Please enter a message.");
-        return;
-    }
-
-    // Get the image source from the hidden input field
-    var imageSrc = document.getElementById("imageSrcInput").value;
-
+function addMessage(sender, receiver, messageContent) {
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", "save_comment.php", true);
+    xhr.open("POST", "save_message.php", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (xhr.status === 200) {
-                console.log("Comment added successfully: " + xhr.responseText);
-                // Clear the comment textbox
-                document.getElementById("messageText").value = "";
-                // Fetch and update comments without closing the modal
-                fetchCommentsAndUpdateModal(imageSrc);
+                console.log("Message sent successfully.");
+                fetchMessagesAndUpdateModal(receiver, sender);
             } else {
-                console.error("Error adding comment. Status code: " + xhr.status);
-                // Optionally, handle the error here (e.g., show an error message to the user)
+                console.error("Error sending message. Status code: " + xhr.status);
             }
         }
     };
-    xhr.send("imageSrc=" + encodeURIComponent(imageSrc) + "&commentText=" + encodeURIComponent(commentText));
+    var params = "sender=" + encodeURIComponent(sender) + "&receiver=" + encodeURIComponent(receiver) + "&messageContent=" + encodeURIComponent(messageContent);
+    xhr.send(params);
 }
 
 
