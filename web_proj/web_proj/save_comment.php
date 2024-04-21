@@ -20,7 +20,7 @@ if (isset($_POST['imageSrc']) && isset($_POST['commentText'])) {
         $pictureId = $row['PictureId'];
 
         // Insert the comment into the comments table
-        $stmt = $conn->prepare("INSERT INTO comments (UserId, PictureId, Comment) VALUES (?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO comments (UserId, PictureId, Comment, Likes) VALUES (?, ?, ?, 0)");
         $stmt->bind_param("iis", $_SESSION['felh_id'], $pictureId, $commentText);
         $stmt->execute();
 

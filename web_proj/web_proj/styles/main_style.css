@@ -346,17 +346,19 @@
             max-height: 60vh; /* Adjust as needed */
         }
 
+
+        .image-container img:hover {
+            transform: scale(1.1); /* Adjust the scale factor as needed */
+            z-index: 1;
+            cursor: pointer;
+            transition: transform 0.3s; /* Add transition for smooth animation */
+        }
+
         .image-container img {
             width: 150px; /* Adjust the width as needed */
             height: auto;
             margin: 5px; /* Adjust the spacing between images */
             transition: transform 0.3s;
-        }
-
-        .image-container img:hover {
-            transform: scale(1.2); /* Increase the scale on hover */
-            z-index: 1;
-            cursor: pointer;
         }
 
         #imageDescription {
@@ -381,6 +383,14 @@
             height: auto; /* Maintain aspect ratio */
         }
 
+
+        .image-row {
+            display: inline-flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
         .rating {
             position: absolute; /* Position rating absolutely */
             bottom: 0; /* Align rating to the bottom of the container */
@@ -392,4 +402,10 @@
 
         .star {
             color: gold; /* Set star color */
+            cursor: pointer;
+        }
+
+        .like {
+            cursor: pointer; /* Set the cursor style to auto */
+            /* Add any other styles for the like button */
         }

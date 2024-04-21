@@ -30,9 +30,11 @@ function updateCommentsTable(comments) {
         var cell1 = newRow.insertCell(0);
         var cell2 = newRow.insertCell(1);
         var cell3 = newRow.insertCell(2);
+        var cell4 = newRow.insertCell(3);
         cell1.textContent = comment.Username;
         cell2.textContent = comment.Comment;
         cell3.textContent = comment.CommentedAt; // Assuming 'commentedAt' is the field name for the timestamp
+        cell4.innerHTML = '<span class="like" onclick="toggleLike(' + comment.CommentID + ')">&hearts;</span><span id="likeCount_' + comment.CommentID + '">' + comment.Likes + '</span>';
     });
 }
 
@@ -174,3 +176,54 @@ document.addEventListener("DOMContentLoaded", function () {
         xhr.send("imageSrc=" + encodeURIComponent(imageSrc) + "&rating=" + encodeURIComponent(rating));
     }
 });
+
+
+// Load liked state from local storage when the page loads
+var commentLikes = JSON.parse(localStorage.getItem('commentLikes')) || {};
+
+function toggleLike(commentID) {
+    var likeCount = document.getElementById('likeCount_' + commentID);
+    var currentLikes = parseInt(likeCount.textContent);
+
+    // Check if the comment is already liked or not
+    var isLiked = commentLikes[commentID] || false; // Get liked state from the object
+
+    // Update the like count and UI based on the current state
+    if (isLiked) {
+        // Unlike the comment
+        likeCount.textContent = currentLikes - 1;
+        likeCount.classList.remove('liked');
+        // Send AJAX request to update the like count in the database
+        updateLikeCount(commentID, currentLikes - 1);
+        // Update liked state in the object
+        commentLikes[commentID] = false;
+    } else {
+        // Like the comment
+        likeCount.textContent = currentLikes + 1;
+        likeCount.classList.add('liked');
+        // Send AJAX request to update the like count in the database
+        updateLikeCount(commentID, currentLikes + 1);
+        // Update liked state in the object
+        commentLikes[commentID] = true;
+    }
+
+    // Save liked state to local storage
+    localStorage.setItem('commentLikes', JSON.stringify(commentLikes));
+}
+
+// Function to update like count in the database
+function updateLikeCount(commentID, newLikes) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "update_like_count.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+                console.log("Like count updated successfully.");
+            } else {
+                console.error("Error updating like count. Status code: " + xhr.status);
+            }
+        }
+    };
+    xhr.send("commentID=" + encodeURIComponent(commentID) + "&newLikes=" + encodeURIComponent(newLikes));
+}

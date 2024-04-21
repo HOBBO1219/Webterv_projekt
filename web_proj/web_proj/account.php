@@ -86,12 +86,14 @@ $conn->close();
 </div>
 
 <div class="image-container">
-    <?php
-    // Loop through the image names and generate image tags
-    foreach ($imageNames as $imageName) {
-        echo '<img src="pictures/' . $imageName . '" alt="' . $imageName . '" ondblclick="confirmDelete(\'' . $imageName . '\')">';
-    }
-    ?>
+    <div class="image-row">
+        <?php
+        // Loop through the image names and generate image tags
+        foreach ($imageNames as $imageName) {
+            echo '<div class="image-wrapper"><img src="pictures/' . $imageName . '" alt="' . $imageName . '" ondblclick="confirmDelete(\'' . $imageName . '\')"></div>';
+        }
+        ?>
+    </div>
 </div>
 
 
