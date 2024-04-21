@@ -355,3 +355,28 @@
         #imageDescription p {
             margin: 0;
         }
+
+        .image-container {
+            display: inline-block; /* Display as inline block to wrap around contents */
+            overflow: hidden; /* Hide overflow content */
+            position: relative; /* Set position to relative for absolute positioning of rating */
+        }
+
+        .image-container img {
+            display: block; /* Ensure image does not have extra space */
+            width: 100%; /* Ensure image takes full width of container */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        .rating {
+            position: absolute; /* Position rating absolutely */
+            bottom: 0; /* Align rating to the bottom of the container */
+            left: 0; /* Align rating to the left of the container */
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+            color: white; /* White text color */
+            padding: 5px; /* Add padding for better visibility */
+        }
+
+        .star {
+            color: gold; /* Set star color */
+        }

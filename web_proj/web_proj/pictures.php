@@ -3,18 +3,30 @@ global $conn;
 session_start();
 include 'db.php';
 
+// Function to fetch images from the database
+function fetchImages() {
+    global $conn;
+
+    $sql = "SELECT * FROM pictures";
+    $result = $conn->query($sql);
+
+    // Check if images are available
+    if ($result->num_rows > 0) {
+        return $result->fetch_all(MYSQLI_ASSOC);
+    } else {
+        return []; // If no images found, return empty array
+    }
+}
+
 // Retrieve user ID from session
 $userID = $_SESSION['felh_id'];
 
 // Retrieve images associated with the logged-in user
-$sql = "SELECT * FROM pictures";
-$result = $conn->query($sql);
+$images = fetchImages();
 
-// Check if images are available
-if ($result->num_rows > 0) {
-    $images = $result->fetch_all(MYSQLI_ASSOC);
-} else {
-    $images = []; // If no images found, initialize empty array
+// Calculate average rating for each image
+foreach ($images as &$image) {
+    $image['averageRating'] = calculateAverageRating($image['PictureID']); // Assuming 'PictureID' is the correct column name
 }
 
 $conn->close();
@@ -39,13 +51,28 @@ $conn->close();
 <div class="gallery-container">
     <?php
     $counter = 0;
+    unset($image);
     foreach ($images as $image):
         if ($counter % 3 === 0) {
             // Start a new row
             echo '<div class="gallery-row">';
         }
         ?>
-        <img src="pictures/<?php echo htmlspecialchars($image['ImagePath']); ?>" alt="<?php echo htmlspecialchars($image['Description']); ?>" onclick="openModal('<?php echo htmlspecialchars($image['ImagePath']); ?>', '<?php echo preg_replace('/\s+/', ' ', htmlspecialchars($image['Description'])); ?>')">
+        <div class="image-container">
+            <img src="pictures/<?php echo htmlspecialchars($image['ImagePath']); ?>" alt="<?php echo htmlspecialchars($image['Description']); ?>" onclick="openModal('<?php echo htmlspecialchars($image['ImagePath']); ?>', '<?php echo preg_replace('/\s+/', ' ', htmlspecialchars($image['Description'])); ?>')">
+            <div class="rating">
+                <?php
+                // Display stars based on the average rating
+                for ($i = 1; $i <= 5; $i++) {
+                    if ($i <= $image['averageRating']) {
+                        echo '<span class="star">&#9733;</span>'; // Filled star
+                    } else {
+                        echo '<span class="star">&#9734;</span>'; // Empty star
+                    }
+                }
+                ?>
+            </div>
+        </div>
         <?php
         $counter++;
         if ($counter % 3 === 0) {
@@ -92,3 +119,24 @@ $conn->close();
 
 </body>
 </html>
+
+<?php
+// Define a function to calculate the average rating for a given image ID
+function calculateAverageRating($imageID) {
+    global $conn; // Assuming $conn is your database connection
+
+    // Prepare and execute SQL query to calculate average rating
+    $sql = "SELECT AVG(Rating) AS AverageRating FROM pictures WHERE PictureID = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $imageID);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    // Fetch the average rating
+    $row = $result->fetch_assoc();
+    $averageRating = $row['AverageRating'];
+
+    // Return the average rating (round to 1 decimal place)
+    return round($averageRating, 1);
+}
+?>
