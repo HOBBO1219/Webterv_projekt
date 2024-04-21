@@ -118,3 +118,55 @@ window.addEventListener("click", function(event) {
         closeModal(); // Close the modal if clicked outside of it
     }
 });
+
+// JavaScript for star rating
+document.addEventListener("DOMContentLoaded", function () {
+    var stars = document.querySelectorAll('.star-rating .star');
+
+    stars.forEach(function (star) {
+        star.addEventListener('mouseover', function () {
+            var rating = parseInt(star.getAttribute('data-rating'));
+            highlightStars(rating);
+        });
+
+        star.addEventListener('mouseout', function () {
+            var rating = parseInt(document.querySelector('.star-rating .selected').getAttribute('data-rating'));
+            highlightStars(rating);
+        });
+
+        star.addEventListener('click', function () {
+            var rating = parseInt(star.getAttribute('data-rating'));
+            saveRating(rating);
+        });
+    });
+
+    function highlightStars(rating) {
+        stars.forEach(function (star) {
+            if (parseInt(star.getAttribute('data-rating')) <= rating) {
+                star.innerHTML = '&#9733;'; // Filled star
+            } else {
+                star.innerHTML = '&#9734;'; // Empty star
+            }
+        });
+    }
+
+    function saveRating(rating) {
+        var imageSrc = document.getElementById("imageSrcInput").value;
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "save_rating.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                if (xhr.status === 200) {
+                    console.log("Rating saved successfully: " + xhr.responseText);
+                    fetchCommentsAndUpdateModal(imageSrc); // Update comments without closing the modal
+                } else {
+                    console.error("Error saving rating. Status code: " + xhr.status);
+                    // Optionally, handle the error here (e.g., show an error message to the user)
+                }
+            }
+        };
+        xhr.send("imageSrc=" + encodeURIComponent(imageSrc) + "&rating=" + encodeURIComponent(rating));
+    }
+});

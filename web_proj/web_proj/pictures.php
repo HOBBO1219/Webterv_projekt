@@ -94,6 +94,13 @@ $conn->close();
     <div class="modal-content">
         <img id="modalImage" src="" alt="Selected Image">
         <div id="imageDescription"></div>
+        <div id="starRating" class="star-rating">
+            <span class="star" data-rating="1">&#9734;</span>
+            <span class="star" data-rating="2">&#9734;</span>
+            <span class="star" data-rating="3">&#9734;</span>
+            <span class="star" data-rating="4">&#9734;</span>
+            <span class="star" data-rating="5">&#9734;</span>
+        </div>
         <table id="commentsTable" class="commentsTable">
             <thead>
             <tr>
