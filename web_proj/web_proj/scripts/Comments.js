@@ -104,6 +104,7 @@ function addComment() {
 function closeModal() {
     var modal = document.getElementById("myModal");
     modal.style.display = "none";
+    window.location.reload();
 }
 
 document.addEventListener("keydown", function(event) {
@@ -125,25 +126,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
     stars.forEach(function (star) {
         star.addEventListener('mouseover', function () {
-            var rating = parseInt(star.getAttribute('data-rating'));
+            var rating = parseFloat(star.getAttribute('data-rating'));
             highlightStars(rating);
         });
 
         star.addEventListener('mouseout', function () {
-            var rating = parseInt(document.querySelector('.star-rating .selected').getAttribute('data-rating'));
+            var rating = parseFloat(document.querySelector('.star-rating .selected').getAttribute('data-rating'));
             highlightStars(rating);
         });
 
         star.addEventListener('click', function () {
-            var rating = parseInt(star.getAttribute('data-rating'));
+            var rating = parseFloat(star.getAttribute('data-rating'));
             saveRating(rating);
         });
     });
 
     function highlightStars(rating) {
         stars.forEach(function (star) {
-            if (parseInt(star.getAttribute('data-rating')) <= rating) {
-                star.innerHTML = '&#9733;'; // Filled star
+            var starRating = parseFloat(star.getAttribute('data-rating'));
+            if (starRating <= rating) {
+                if (rating - starRating >= 0.5) {
+                    star.innerHTML = '&#9733;'; // Filled star
+                } else {
+                    star.innerHTML = '&#9734;&#9733;'; // Half-filled star
+                }
             } else {
                 star.innerHTML = '&#9734;'; // Empty star
             }
